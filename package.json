@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "lint-staged": {
     "*.{ts,js,json}": [
@@ -19,11 +20,15 @@
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
     "@eslint/js": "^9.30.1",
+    "@types/node": "^24.0.12",
+    "@vitest/coverage-istanbul": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "eslint": "^9.30.1",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.2",
-    "typescript-eslint": "^8.36.0"
+    "typescript-eslint": "^8.36.0",
+    "vitest": "^3.2.4"
   }
 }
