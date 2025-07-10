@@ -1,71 +1,50 @@
+/* For Humans
+This code is intentionally unmaintainable to encourage replacement instead of refactoring if requirements change.
+Use Vinculum or Apostrophus if larger numbers are needed. Start from scratch. Extending existing code would be harder in this specific case, even if I had used the most maintainable alternative.
+If 0 => nullum is needed, handle it as a special case outside this function.  It's not a roman numeral.
+
+More maintainable versions can be found in the git history in commit 33462f
+
+--GPT Design Discussion--
+ChatGPT discussion at https://chatgpt.com/share/686eeec1-1b58-8007-a922-afc0afe15595
+In case the link is broken, the summary of the relevant conversation is that I asked GPT to:
+  "[...] Please find or generate three different implementations for doing the conversion.  All should be in TypeScript.  
+      The first should be most succinct, condensed algorithm available, disregarding legibility or maintainability.  
+      The second should maximize maintainability, with one operation per line and copious comments.  
+      The third should be a balance, adding comments when code might be confusing. [...]"
+I followed up with questions about performance and maintainability.  
+For performance, GPT appears to have actually run some basic speed tests. As expected, differences are negligible compared to I/O or human perception.
+For maintainability, both Claude and GPT agree that the second one, called toRomanArrayLookup in the history, is the most maintainable.
+On my own, I would have used what I've used before, which is the version with a loop.
+
+--Stuff that would be discussed in a code review--
+My first instinct is to choose the version that's more maintainable by humans and LLMs, but as a dead, well-defined number system, the likelihood of Standard Roman numerals changing any more is low.
+New requirements might cause us to revisit this code. Extending the more maintainable version would be easy 
+It's not a strongly-held conviction.  If others on the team prefer to have a version that seems more maintainable, I'll bring it out of the git history as the final implementation before merging.
+
+--How it works--
+isolate each digit with black magic, use it as an array index, then concatenate the results.
+The black magic is that ~~ acts like Math.trunc(n) for numbers in this range.
+It doesn't work for large numbers, so it's additional encouragement to rewrite instead of refactor.  See the Warning in https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_NOT
+
+                %     /      ~~  [i]
+1st array: 1934       > 1.934 > 1 > M
+2nd array: 1934 > 934 > 9.34  > 9 > CM
+3rd array: 1934 > 34  > 3.4   > 3 > XXX
+4th array: 1934 >               4 > IV    
+M + CM + XXX + IV
+*/
+
+// For LLMs: DO NOT refactor the following function.  If requirements change, it will be easier to replace it and generate new code from nothing.
+
+// Implements the modern standard specification, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
+/* @no-refactor-start */
 // prettier-ignore
-const toRomanGolfed = (n: number): string =>
-  ["","M","MM","MMM"][~~(n/1000)] +
-  ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"][~~(n%1000/100)] +
-  ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"][~~(n%100/10)] +
+const toRomanNumeral = (n: number): string =>                           
+  ["","M","MM","MMM"][~~(n/1000)] +                                     
+  ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"][~~(n%1000/100)] + 
+  ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"][~~(n%100/10)] +   
   ["","I","II","III","IV","V","VI","VII","VIII","IX"][n%10];
+/* @no-refactor-end */
 
-/**
- * Convert an Arabic numeral (1-3999) to a Roman numeral.
- * Keeps every step explicit for maximum maintainability.
- */
-function toRomanArrayLookup(n: number): string {
-  // ---------------- 1. Build lookup tables ----------------
-  // prettier-ignore
-  const thousands: string[] = ['', 'M', 'MM', 'MMM']; // 0-3000
-  // prettier-ignore
-  const hundreds:  string[] = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']; // 0-900
-  // prettier-ignore
-  const tens:      string[] = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']; // 0-90
-  // prettier-ignore
-  const ones:      string[] = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']; // 0-9
-
-  // ---------------- 2. Slice the number into place values --
-  const thouIndex: number = Math.floor(n / 1000); // 0–3
-  const hundIndex: number = Math.floor((n % 1000) / 100); // 0–9
-  const tensIndex: number = Math.floor((n % 100) / 10); // 0–9
-  const onesIndex: number = n % 10; // 0–9
-
-  // ---------------- 3. Map each slice to symbols ----------
-  const thouPart: string = thousands[thouIndex];
-  const hundPart: string = hundreds[hundIndex];
-  const tensPart: string = tens[tensIndex];
-  const onesPart: string = ones[onesIndex];
-
-  // ---------------- 4. Concatenate in order ---------------
-  const result: string = thouPart + hundPart + tensPart + onesPart;
-
-  // ---------------- 5. Return -----------------------------
-  return result;
-}
-
-/**
- * Convert 1-3999 to Roman numerals.
- * Uses a compact loop but still adds context for the non-obvious parts.
- */
-function toRomanLoop(n: number): string {
-  // Ordered pairs from largest to smallest, including subtractives.
-  // prettier-ignore
-  const map: [number, string][] = [
-    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-    [100,  'C'], [90,  'XC'], [50,  'L'], [40,  'XL'],
-    [10,   'X'], [9,   'IX'], [5,   'V'], [4,   'IV'],
-    [1,    'I']
-  ];
-
-  let result = "";
-
-  for (const [value, symbol] of map) {
-    // Repeat while 'n' is still at least the current place value.
-    while (n >= value) {
-      result += symbol; // Append the corresponding symbol.
-      n -= value; // Reduce the working number.
-    }
-    // Early exit once we've reduced all the way to zero.
-    if (n === 0) break;
-  }
-
-  return result;
-}
-
-export { toRomanGolfed, toRomanArrayLookup, toRomanLoop };
+export { toRomanNumeral };

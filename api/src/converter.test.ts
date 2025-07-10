@@ -1,13 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { toRomanGolfed, toRomanArrayLookup, toRomanLoop } from "./converter";
+import { toRomanNumeral } from "./converter";
 
-describe.each([
-  ["toRomanGolfed", toRomanGolfed],
-  ["toRomanArrayLookup", toRomanArrayLookup],
-  ["toRomanLoop", toRomanLoop],
-])("%s", (name, toRoman) => {
-  // Test specification to the modern standard form, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
-
+// Test specification to the modern standard form, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
+describe("toRoman", () => {
   describe("First Occurence of Numeral Symbols", () => {
     test.each([
       [1, "I"],
@@ -18,7 +13,7 @@ describe.each([
       [500, "D"],
       [1000, "M"],
     ])("%i => %s", (input, expected) => {
-      expect(toRoman(input)).toBe(expected);
+      expect(toRomanNumeral(input)).toBe(expected);
     });
   });
 
@@ -31,7 +26,7 @@ describe.each([
       [400, "CD"],
       [900, "CM"],
     ])("%i => %s", (input, expected) => {
-      expect(toRoman(input)).toBe(expected);
+      expect(toRomanNumeral(input)).toBe(expected);
     });
   });
 
@@ -43,7 +38,7 @@ describe.each([
       [2000, "MM"],
       [3333, "MMMCCCXXXIII"],
     ])("%i => %s", (input, expected) => {
-      expect(toRoman(input)).toBe(expected);
+      expect(toRomanNumeral(input)).toBe(expected);
     });
   });
 
@@ -57,11 +52,11 @@ describe.each([
       [999, "CMXCIX"],
       [1666, "MDCLXVI"], // All symbols are used
     ])("%i => %s", (input, expected) => {
-      expect(toRoman(input)).toBe(expected);
+      expect(toRomanNumeral(input)).toBe(expected);
     });
   });
 
   test("Maximum Value", () => {
-    expect(toRoman(3999)).toBe("MMMCMXCIX");
+    expect(toRomanNumeral(3999)).toBe("MMMCMXCIX");
   });
 });
