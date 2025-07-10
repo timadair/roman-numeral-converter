@@ -20,7 +20,7 @@ describe("GET /romannumeral", () => {
     expect(res.body).toEqual({ result: "XLII" });
   });
 
-  it("should return 400 for query=0", async () => {
+  it("Nullum (zero) disallowed", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=0");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
@@ -28,7 +28,7 @@ describe("GET /romannumeral", () => {
     });
   });
 
-  it("should return 400 for query=-15", async () => {
+  it("Negatives disallowed", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=-15");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
@@ -36,7 +36,7 @@ describe("GET /romannumeral", () => {
     });
   });
 
-  it("should return 400 for query=4000", async () => {
+  it("Over 3,999 disallowed", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=4000");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
@@ -44,7 +44,7 @@ describe("GET /romannumeral", () => {
     });
   });
 
-  it("should return 400 for query=1,234", async () => {
+  it("Commas disallowed", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=1,234");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
@@ -52,7 +52,7 @@ describe("GET /romannumeral", () => {
     });
   });
 
-  it("should return 400 for query=1.234", async () => {
+  it("Periods disallowed", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=1.234");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
