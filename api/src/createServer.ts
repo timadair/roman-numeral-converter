@@ -17,7 +17,8 @@ export function createServer() {
         .status(400)
         .send({ error: "Query must be an integer between 1 and 3999" });
     }
-    return { result: toRomanNumeral(query) };
+    const result = toRomanNumeral(query);
+    return { input: queryParam, output: result };
   });
   return fastify;
 }

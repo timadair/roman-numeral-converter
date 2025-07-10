@@ -14,10 +14,16 @@ describe("GET /romannumeral", () => {
     await fastify.close();
   });
 
+  it("should use JSON format for successful responses", async () => {
+    const res = await request(fastify.server).get("/romannumeral?query=42");
+    expect(res.status).toBe(200);
+    expect(() => JSON.parse(res.text)).not.toThrow();
+  });
+
   it("should return the correct Roman numeral for 42", async () => {
     const res = await request(fastify.server).get("/romannumeral?query=42");
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ result: "XLII" });
+    expect(res.body).toEqual({ input: "42", output: "XLII" });
   });
 
   it("Nullum (zero) disallowed", async () => {
