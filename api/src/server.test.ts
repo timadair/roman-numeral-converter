@@ -1,5 +1,5 @@
 import { createServer } from "./createServer";
-import request from "supertest"; // Make sure to install supertest: pnpm add -D supertest
+import request from "supertest";
 import { describe, it, beforeAll, afterAll, expect } from "vitest";
 
 describe("GET /romannumeral", () => {
@@ -7,7 +7,7 @@ describe("GET /romannumeral", () => {
 
   beforeAll(async () => {
     fastify = createServer();
-    await fastify.listen({ port: 0 }); // random available port
+    await fastify.listen({ port: 0 });
   });
 
   afterAll(async () => {
