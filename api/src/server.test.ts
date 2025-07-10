@@ -1,10 +1,9 @@
-import Fastify from "fastify";
 import { createServer } from "./createServer";
 import request from "supertest"; // Make sure to install supertest: pnpm add -D supertest
 import { describe, it, beforeAll, afterAll, expect } from "vitest";
 
 describe("GET /romannumeral", () => {
-  let fastify: ReturnType<typeof Fastify>;
+  let fastify: ReturnType<typeof createServer>;
 
   beforeAll(async () => {
     fastify = createServer();
