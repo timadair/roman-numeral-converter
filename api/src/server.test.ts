@@ -1,5 +1,5 @@
-import Fastify, { FastifyRequest, FastifyReply } from "fastify";
-import { toRomanNumeral } from "./converter";
+import Fastify from "fastify";
+import { createServer } from "./createServer";
 import request from "supertest"; // Make sure to install supertest: pnpm add -D supertest
 import { describe, it, beforeAll, afterAll, expect } from "vitest";
 
@@ -7,21 +7,7 @@ describe("GET /romannumeral", () => {
   let fastify: ReturnType<typeof Fastify>;
 
   beforeAll(async () => {
-    fastify = Fastify();
-    // Register the route as in server.ts
-    fastify.get(
-      "/romannumeral",
-      (request: FastifyRequest, reply: FastifyReply) => {
-        const queryParam = (request.query as { query?: string }).query;
-        const query = Number(queryParam);
-        if (!queryParam || isNaN(query) || query < 1 || query > 3999) {
-          return reply
-            .status(400)
-            .send({ error: "Query must be an integer between 1 and 3999" });
-        }
-        return { result: toRomanNumeral(query) };
-      },
-    );
+    fastify = createServer();
     await fastify.listen({ port: 0 }); // random available port
   });
 
