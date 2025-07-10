@@ -44,4 +44,20 @@ describe("GET /romannumeral", () => {
       error: "Query must be an integer between 1 and 3999",
     });
   });
+
+  it("should return 400 for query=1,234", async () => {
+    const res = await request(fastify.server).get("/romannumeral?query=1,234");
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      error: "Query must be an integer between 1 and 3999",
+    });
+  });
+
+  it("should return 400 for query=1.234", async () => {
+    const res = await request(fastify.server).get("/romannumeral?query=1.234");
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      error: "Query must be an integer between 1 and 3999",
+    });
+  });
 });
