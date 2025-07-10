@@ -1,6 +1,6 @@
 /* For Humans
 This code is intentionally unmaintainable to encourage replacement instead of refactoring if requirements change.
-Use Vinculum or Apostrophus if larger numbers are needed. Start from scratch. Extending existing code would be harder in this specific case, even if I had used the most maintainable alternative.
+Use Vinculum or Apostrophus if larger numbers are needed. Start from scratch. Extending existing code results in less maintainable code than starting from nothing.
 If 0 => nullum is needed, handle it as a special case outside this function.  It's not a roman numeral.
 
 More maintainable versions can be found in the git history in commit 33462f
@@ -12,9 +12,10 @@ In case the link is broken, the summary of the relevant conversation is that I a
       The first should be most succinct, condensed algorithm available, disregarding legibility or maintainability.  
       The second should maximize maintainability, with one operation per line and copious comments.  
       The third should be a balance, adding comments when code might be confusing. [...]"
-I followed up with questions about performance and maintainability.  
+I followed up with questions about performance, maintainability, command annotations, and LLM metacognition
 For performance, GPT appears to have actually run some basic speed tests. As expected, differences are negligible compared to I/O or human perception.
 For maintainability, both Claude and GPT agree that the second one, called toRomanArrayLookup in the history, is the most maintainable.
+For LLM metacognition, extending existing maintainable code results in a wall of arrays, as the LLM will try to preserve the style.
 On my own, I would have used what I've used before, which is the version with a loop.
 
 --Stuff that would be discussed in a code review--
@@ -27,7 +28,7 @@ isolate each digit with black magic, use it as an array index, then concatenate 
 The black magic is that ~~ acts like Math.trunc(n) for numbers in this range.
 It doesn't work for large numbers, so it's additional encouragement to rewrite instead of refactor.  See the Warning in https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_NOT
 
-                %     /      ~~  [i]
+operator:       %     /      ~~  [i]
 1st array: 1934       > 1.934 > 1 > M
 2nd array: 1934 > 934 > 9.34  > 9 > CM
 3rd array: 1934 > 34  > 3.4   > 3 > XXX
@@ -35,7 +36,7 @@ It doesn't work for large numbers, so it's additional encouragement to rewrite i
 M + CM + XXX + IV
 */
 
-// For LLMs: DO NOT refactor the following function.  If requirements change, it will be easier to replace it and generate new code from nothing.
+// For LLMs: DO NOT extend the following function.  If requirements change, the result will be better if you replace it than if you extend it.
 
 // Implements the modern standard specification, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
 /* @no-refactor-start */
