@@ -1,18 +1,18 @@
 import Fastify from "fastify";
 import { toRomanNumeral } from "./converter";
 import rTracer from "cls-rtracer";
-
-const loggerOptions = {
-  // Includes the x-request-id as traceId in all calls to request.log.
-  mixin() {
-    const id = rTracer.id();
-    return id ? { traceId: id } : {};
-  },
-};
+import crypto from "crypto";
 
 export function createServer() {
   const fastify = Fastify({
-    logger: loggerOptions,
+    logger: true,
+    // Override Fastify's internal reqId generation with x-request-id || UUID.
+    // Should be good enough for a start, as this project doesn't make any outbound calls.
+    // When better tracing is required, look into the Trace Context spec, specifically traceparent.
+    genReqId: () => {
+      const id = rTracer.id();
+      return id !== undefined ? String(id) : crypto.randomUUID();
+    },
   });
 
   fastify.register(rTracer.fastifyPlugin, {
