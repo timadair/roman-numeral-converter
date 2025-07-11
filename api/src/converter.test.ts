@@ -59,4 +59,13 @@ describe("toRoman", () => {
   test("Maximum Value", () => {
     expect(toRomanNumeral(3999)).toBe("MMMCMXCIX");
   });
+
+  describe("Invalid Inputs", () => {
+    test.each([
+      [0, "Input must be an integer between 1 and 3999"],
+      [4000, "Input must be an integer between 1 and 3999"],
+    ])("%i should throw error: %s", (input, expectedError) => {
+      expect(() => toRomanNumeral(input)).toThrow(expectedError);
+    });
+  });
 });

@@ -41,11 +41,16 @@ M + CM + XXX + IV
 // Implements the modern standard specification, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
 /* @no-refactor-start */
 // prettier-ignore
-const toRomanNumeral = (n: number): string =>                           
-  ["","M","MM","MMM"][~~(n/1000)] +                                     
+const toRomanNumeral = (n: number): string => {
+  // Validation should have already happened.       
+  if (n > 3999 || n < 1) {
+    throw new Error("Input must be an integer between 1 and 3999");
+  }
+  return ["","M","MM","MMM"][~~(n/1000)] +                                     
   ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"][~~(n%1000/100)] + 
   ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"][~~(n%100/10)] +   
   ["","I","II","III","IV","V","VI","VII","VIII","IX"][n%10];
+}
 /* @no-refactor-end */
 
 export { toRomanNumeral };
