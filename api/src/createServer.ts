@@ -2,7 +2,7 @@ import Fastify from "fastify";
 import { toRomanNumeral } from "./converter";
 
 export function createServer() {
-  const fastify = Fastify();
+  const fastify = Fastify({ logger: true });
   fastify.get("/romannumeral", (request, reply) => {
     const queryParam = (request.query as { query?: string }).query;
     const query = Number(queryParam);
