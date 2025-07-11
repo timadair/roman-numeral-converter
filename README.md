@@ -1,16 +1,26 @@
-# roman-numeral-converter
-Demo project for converting from Arabic to Roman numerals
+# Roman Numeral Converter
 
-Frontend
-Uses React with TypeScript + SWC, built by Vite.  SWC increases speed at the cost of typechecking, but ESLint is in place alredy for typechecking.  Vite also increases speed, and it's been gaining market share, so I've been wanting to build a small project with it.
+Demo project for converting from Arabic to Roman numerals.
 
-Backend
-Uses Fastify for its NodeJS framework.  Very fast, can be extended with NestJS for more integrations, can be migrated to Express relatively easily.  The service's domain is unlikely to grow beyond microservice scope, so needing to use Express seems unlikely.
+## Frontend
 
-For logging, uses Pino, Fastify's default.  Includes requestId, response statusCode and responseTime.  
-Tracing across layers enabled with optional x-request-id header (for now, might replace with traceparent).  
-For tracing, uses cls-rtracer for handling incoming headers.  It's widely used, well-regarded, and lightweight.  
+- Uses React with TypeScript + SWC, built by Vite
+- SWC increases speed at the cost of typechecking, but ESLint is in place already for typechecking
+- Vite also increases speed, and it's been gaining market share, so I've been wanting to build a small project with it
 
-For testing: Vitest (it's relatively new, I'd heard good things about it, it will work with both React and NodeJS, and I wanted to try it out), and supertest (allows HTTP calls against the server in tests)
+## Backend
 
-For code quality and style: Husky, eslint, typescript-eslint, prettier.  lint-staged limits Husky to only staged files, which I wish I knew about earlier.
+- Uses Fastify for its NodeJS framework
+  - Very fast, can be extended with NestJS for more integrations, can be migrated to Express relatively easily
+  - The service's domain is unlikely to grow beyond microservice scope, so needing to use Express seems unlikely
+- For logging, uses Pino, Fastify's default
+  - Includes requestId, response statusCode and responseTime
+- Tracing across layers enabled with optional x-request-id header (for now, might replace with traceparent)
+- For tracing, uses cls-rtracer for handling incoming headers
+  - It's widely used, well-regarded, and lightweight
+- For testing: Vitest (it's relatively new, I'd heard good things about it, it will work with both React and NodeJS, and I wanted to try it out), and supertest (allows HTTP calls against the server in tests)
+
+## Code Quality and Style
+
+- Husky, eslint, typescript-eslint, prettier - Industry best practice
+- lint-staged limits Husky to only staged files, which I wish I had known about earlier
