@@ -5,7 +5,7 @@ Demo project for converting from Arabic to Roman numerals.
 ## Frontend
 
 - Uses React with TypeScript + SWC, built by Vite
-- SWC increases speed at the cost of typechecking, but ESLint is in place already for typechecking
+- SWC increases speed at the cost of real-time typechecking, but ESLint is in place already for pre-commit typechecking
 - Vite also increases speed, and it's been gaining market share, so I've been wanting to build a small project with it
 
 ## Backend
