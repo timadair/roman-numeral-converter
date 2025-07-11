@@ -2,6 +2,9 @@
 
 Demo project for converting from Arabic to Roman numerals.
 
+Implements the modern standard Roman numeral specification, 1-3999, found at https://en.wikipedia.org/wiki/Roman_numerals#Standard_form
+
+
 ## Frontend
 
 - Uses React with TypeScript + SWC, built by Vite
