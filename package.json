@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test": "pnpm -r test",
+    "test:ui": "pnpm -r test:ui"
   },
   "lint-staged": {
     "*.{ts,js,json}": [
