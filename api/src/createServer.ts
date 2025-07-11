@@ -1,25 +1,28 @@
 import Fastify from "fastify";
 import { toRomanNumeral } from "./converter";
-import { IncomingHttpHeaders } from "http";
+import rTracer from "cls-rtracer";
 
-/**
- * Use existing request ID if provided, otherwise generate one
- */
-function getRequestIdForTracing(headers: IncomingHttpHeaders): string {
-  const h = headers["x-request-id"];
-  return typeof h === "string"
-    ? h
-    : Array.isArray(h)
-      ? h[0]
-      : crypto.randomUUID();
-}
+const loggerOptions = {
+  // Includes the x-request-id as traceId in all calls to request.log.
+  mixin() {
+    const id = rTracer.id();
+    return id ? { traceId: id } : {};
+  },
+};
 
 export function createServer() {
   const fastify = Fastify({
-    logger: true,
-    genReqId: (req) => getRequestIdForTracing(req.headers),
+    logger: loggerOptions,
   });
+
+  fastify.register(rTracer.fastifyPlugin, {
+    useHeader: true,
+    echoHeader: true,
+    headerName: "X-Request-Id",
+  });
+
   fastify.get("/romannumeral", (request, reply) => {
+    request.log.info("Request received, beginning validation");
     const queryParam = (request.query as { query?: string }).query;
     const query = Number(queryParam);
     if (

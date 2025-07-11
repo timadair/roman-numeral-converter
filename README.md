@@ -3,7 +3,8 @@ Demo project for converting from Arabic to Roman numerals
 
 Uses Fastify for its NodeJS framework.  Very fast, can be extended with NestJS for more integrations, can be migrated to Express relatively easily.  The service's domain is unlikely to grow beyond microservice scope, so needing to use Express seems unlikely.
 
-For backend logging, uses Pino, Fastify's default.  Includes requestId, response statusCode and responseTime.  Tracing across layers enabled with optional x-request-id header.
+For backend logging, uses Pino, Fastify's default.  Includes requestId, response statusCode and responseTime.  
+Tracing across layers enabled with optional x-request-id header.  Uses cls-rtracer
 
 For testing: Vitest (it's relatively new and I wanted to try it out), and supertest (allows HTTP calls against the server in tests)
 

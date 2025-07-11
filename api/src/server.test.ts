@@ -65,4 +65,19 @@ describe("GET /romannumeral", () => {
       error: "Query must be an integer between 1 and 3999",
     });
   });
+
+  it("should echo X-Request-Id header in the response", async () => {
+    const requestId = crypto.randomUUID();
+    const res = await request(fastify.server)
+      .get("/romannumeral?query=42")
+      .set("X-Request-Id", requestId);
+    expect(res.status).toBe(200);
+    // Fastify lowercases all headers internally, so check for lowercase
+    expect(res.headers["x-request-id"]).toBe(requestId);
+  });
+
+  it.skip("should include x-request-id when invoking request.log.$level()", async () => {
+    // Verified manually, automating this would require injecting a listener into createServer.
+    // Not worth the time at the moment.
+  });
 });
