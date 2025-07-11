@@ -1,8 +1,24 @@
 import Fastify from "fastify";
 import { toRomanNumeral } from "./converter";
+import { IncomingHttpHeaders } from "http";
+
+/**
+ * Use existing request ID if provided, otherwise generate one
+ */
+function getRequestIdForTracing(headers: IncomingHttpHeaders): string {
+  const h = headers["x-request-id"];
+  return typeof h === "string"
+    ? h
+    : Array.isArray(h)
+      ? h[0]
+      : crypto.randomUUID();
+}
 
 export function createServer() {
-  const fastify = Fastify({ logger: true });
+  const fastify = Fastify({
+    logger: true,
+    genReqId: (req) => getRequestIdForTracing(req.headers),
+  });
   fastify.get("/romannumeral", (request, reply) => {
     const queryParam = (request.query as { query?: string }).query;
     const query = Number(queryParam);
