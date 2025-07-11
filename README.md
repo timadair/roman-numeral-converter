@@ -1,11 +1,15 @@
 # roman-numeral-converter
 Demo project for converting from Arabic to Roman numerals
 
+Frontend
+Uses React with TypeScript + SWC, built by Vite.  SWC increases speed at the cost of typechecking, but ESLint is in place alredy for typechecking.  Vite also increases speed, and it's been gaining market share, so I've been wanting to build a small project with it.
+
+Backend
 Uses Fastify for its NodeJS framework.  Very fast, can be extended with NestJS for more integrations, can be migrated to Express relatively easily.  The service's domain is unlikely to grow beyond microservice scope, so needing to use Express seems unlikely.
 
-For backend logging, uses Pino, Fastify's default.  Includes requestId, response statusCode and responseTime.  
+For logging, uses Pino, Fastify's default.  Includes requestId, response statusCode and responseTime.  
 Tracing across layers enabled with optional x-request-id header (for now, might replace with traceparent).  
-For backend tracing, uses cls-rtracer for handling incoming headers.  It's widely used, well-regarded, and lightweight.  
+For tracing, uses cls-rtracer for handling incoming headers.  It's widely used, well-regarded, and lightweight.  
 
 For testing: Vitest (it's relatively new, I'd heard good things about it, it will work with both React and NodeJS, and I wanted to try it out), and supertest (allows HTTP calls against the server in tests)
 
