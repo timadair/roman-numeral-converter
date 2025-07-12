@@ -10,9 +10,15 @@ export function HomePage() {
   const [showError, setShowError] = useState(false);
 
   const handleConvert = async () => {
+    const traceId = crypto.randomUUID();
     if (inputValue && inputValue >= 1 && inputValue <= 3999) {
       try {
-        const response = await fetch(`http://localhost:8080/romannumeral?query=${inputValue}`);
+        console.log('Making API request with traceId:', traceId);
+        const response = await fetch(`http://localhost:8080/romannumeral?query=${inputValue}`, {
+          headers: {
+            'X-Request-Id': traceId
+          }
+        });
         if (!response.ok) {
           const data = await response.json();
           setError(data.error || 'Unknown error');
@@ -22,10 +28,12 @@ export function HomePage() {
         const data = await response.json();
         setResult(data.output);
       } catch (err: any) {
+        console.log("Error for traceId", traceId, err);
         setError(err.message || 'Network error');
         setShowError(true);
       }
     } else {
+      console.log("Invalid user submission", traceId, inputValue);
       setResult('Please enter a number between 1 and 3999');
     }
   };
