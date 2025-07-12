@@ -1,5 +1,6 @@
-import { View, Button, Text, Flex } from '@adobe/react-spectrum';
+import { View, Button, Flex } from '@adobe/react-spectrum';
 import { useState } from 'react';
+import { RomanInscription } from '../components/RomanInscription';
 import { NumberInput } from '../components/NumberInput';
 
 export function HomePage() {
@@ -33,9 +34,9 @@ export function HomePage() {
         </Flex>
         
         {result && (
-          <Text>
+          <RomanInscription>
             {"MMMCCCXXXIII"}
-          </Text>
+          </RomanInscription>
         )}
       </Flex>
     </View>
