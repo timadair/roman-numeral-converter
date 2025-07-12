@@ -1,10 +1,43 @@
-import { Heading, View } from '@adobe/react-spectrum';
+import { View, Button, Text, Flex } from '@adobe/react-spectrum';
+import { useState } from 'react';
+import { NumberInput } from '../components/NumberInput';
 
 export function HomePage() {
+  const [inputValue, setInputValue] = useState<number | undefined>(undefined);
+  const [result, setResult] = useState<string>('');
+
+  const handleConvert = () => {
+    if (inputValue && inputValue >= 1 && inputValue <= 3999) {
+      // TODO: Call the API to convert the number
+      setResult(`Converted: ${inputValue} (placeholder)`);
+    } else {
+      setResult('Please enter a number between 1 and 3999');
+    }
+  };
+
   return (
     <View padding="size-1000">
-      <Heading level={1}>Hello World!</Heading>
-      <p>Welcome to the Roman Numeral Converter</p>
+      <Flex direction="column" gap="size-300" alignItems="center">
+        <Flex gap="size-200" alignItems="end">
+          <NumberInput 
+            value={inputValue}
+            onChange={setInputValue}
+          />
+          <Button 
+            variant="primary" 
+            onPress={handleConvert}
+            isDisabled={!inputValue || inputValue < 1 || inputValue > 3999}
+          >
+            Convert
+          </Button>
+        </Flex>
+        
+        {result && (
+          <Text>
+            {"MMMCCCXXXIII"}
+          </Text>
+        )}
+      </Flex>
     </View>
   );
 } 
