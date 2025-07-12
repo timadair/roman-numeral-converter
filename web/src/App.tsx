@@ -1,16 +1,29 @@
 import { Provider, defaultTheme } from '@adobe/react-spectrum';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoutes } from './routes';
+import { Layout } from './components/Layout';
+import { ColorSchemeProvider, useColorScheme } from './context/ColorSchemeContext';
 import './App.css'
+
+function AppContent() {
+  const { colorScheme } = useColorScheme();
+
+  return (
+    <Provider theme={defaultTheme} colorScheme={colorScheme}>
+      <BrowserRouter>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+      </BrowserRouter>
+    </Provider>
+  );
+}
 
 function App() {
   return (
-    // The Provider automatically uses the Light/Dark mode from the browser.  I imagine there are more features built in, like localization and 
-    <Provider theme={defaultTheme}> 
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </Provider>
+    <ColorSchemeProvider>
+      <AppContent />
+    </ColorSchemeProvider>
   );
 }
 
