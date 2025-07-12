@@ -1,8 +1,5 @@
-import { View, Header, Heading, Button, Flex } from '@adobe/react-spectrum';
-import { useProvider } from '@adobe/react-spectrum';
-import Moon from '@spectrum-icons/workflow/Moon';
-import Light from '@spectrum-icons/workflow/Light';
-import { useColorScheme } from '../context/ColorSchemeContext';
+import { View, Header, Heading, Flex } from '@adobe/react-spectrum';
+import { ColorSchemeToggle } from './ColorSchemeToggle';
 import type { ReactNode } from 'react';
 
 interface LayoutProps {
@@ -10,9 +7,6 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { colorScheme } = useProvider();
-  const { toggleColorScheme } = useColorScheme();
-
   return (
     <View height="auto" overflow="hidden">
       <Header>
@@ -20,14 +14,7 @@ export function Layout({ children }: LayoutProps) {
           <Heading level={3} marginStart="size-200">
             Roman Numeral Converter
           </Heading>
-          <Button
-            variant="secondary"
-            onPress={toggleColorScheme}
-            aria-label={`Switch to ${colorScheme === 'light' ? 'dark' : 'light'} mode`}
-            marginEnd="size-200"
-          >
-            {colorScheme === 'light' ? <Moon /> : <Light />}
-          </Button>
+          <ColorSchemeToggle />
         </Flex>
       </Header>
       <View flex="1" overflow="auto">
