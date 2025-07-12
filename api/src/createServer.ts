@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import { toRomanNumeral } from "./converter";
 import rTracer from "cls-rtracer";
 import crypto from "crypto";
+import cors from "@fastify/cors";
 
 export function createServer() {
   const fastify = Fastify({
@@ -19,6 +20,10 @@ export function createServer() {
     useHeader: true,
     echoHeader: true,
     headerName: "X-Request-Id",
+  });
+
+  fastify.register(cors, {
+    origin: "http://localhost:5173",
   });
 
   fastify.get("/romannumeral", (request, reply) => {
