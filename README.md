@@ -18,6 +18,8 @@ docker build -t roman-numeral-app .
 docker run -p 127.0.0.1:8080:8080 roman-numeral-app
 ```
 Then open your browser to https://localhost:8080
+Metrics are available at https://localhost:8080/metrics
+The backend can be called directly at https://localhost:8080/romannumeral?query={integer}
 
 # Dev
 
