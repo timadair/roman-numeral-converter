@@ -1,15 +1,15 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { NumberInput } from './NumberInput';
+import { RomanNumeralConverter } from './RomanNumeralConverter';
 import '@testing-library/jest-dom';
 import { Provider, defaultTheme } from '@adobe/react-spectrum';
 
-describe('NumberInput', () => {
+describe('RomanNumeralConverter', () => {
   const setup = (onResult = jest.fn(), onError = jest.fn()) => {
     // As more tests are added, override render instead of adding a Provider in every test file.  See https://react-spectrum.adobe.com/react-spectrum/testing.html
     // With only one test file that needs it so far, it's not overriding render yet.
     render(
       <Provider theme={defaultTheme}>
-        <NumberInput onResult={onResult} onError={onError} />
+        <RomanNumeralConverter onResult={onResult} onError={onError} />
       </Provider>
     );
     // Use getByRole('textbox', ...) for React Spectrum's NumberField input

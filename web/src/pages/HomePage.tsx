@@ -1,7 +1,7 @@
 import { View, Flex, DialogContainer, AlertDialog } from '@adobe/react-spectrum';
 import { useState } from 'react';
 import { RomanInscription } from '../components/RomanInscription';
-import { NumberInput } from '../components/NumberInput';
+import { RomanNumeralConverter } from '../components/RomanNumeralConverter';
 
 export function HomePage() {
   const [result, setResult] = useState<string>('');
@@ -21,7 +21,7 @@ export function HomePage() {
     <>
       <View padding="size-1000">
         <Flex direction="column" gap="size-300" alignItems="center">
-          <NumberInput
+          <RomanNumeralConverter
             onResult={handleResult}
             onError={handleError}
           />

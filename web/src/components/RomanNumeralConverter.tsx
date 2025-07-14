@@ -1,12 +1,12 @@
 import { NumberField, Button, Flex } from '@adobe/react-spectrum';
 import { useState } from 'react';
 
-interface NumberInputProps {
+interface RomanNumeralConverterProps {
   onResult: (result: string) => void;
   onError: (error: string) => void;
 }
 
-export function NumberInput({ onResult, onError }: NumberInputProps) {
+export function RomanNumeralConverter({ onResult, onError }: RomanNumeralConverterProps) {
   const [inputValue, setInputValue] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState(false);
 
