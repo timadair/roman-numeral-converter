@@ -1,7 +1,8 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { RomanNumeralConverter } from './RomanNumeralConverter';
 import '@testing-library/jest-dom';
 import { Provider, defaultTheme } from '@adobe/react-spectrum';
+import userEvent from '@testing-library/user-event';
 
 describe('RomanNumeralConverter', () => {
   const setup = (onResult = jest.fn(), onError = jest.fn()) => {
@@ -35,17 +36,18 @@ describe('RomanNumeralConverter', () => {
     expect(button).toBeDisabled();
   });
 
-  it('button is enabled for valid input after blur', () => {
+  it('button is enabled for valid input after blur', async () => {
     const { input, button } = setup();
-    fireEvent.change(input, { target: { value: '123' } });
-    fireEvent.blur(input);
+    const user = userEvent.setup();
+    await user.type(input, '123');
+    await user.tab(); // blur
     expect(button).toBeEnabled();
   });
 
-  it('button is enabled for valid input after pressing Enter', () => {
+  it('button is enabled for valid input after pressing Enter', async () => {
     const { input, button } = setup();
-    fireEvent.change(input, { target: { value: '123' } });
-    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+    const user = userEvent.setup();
+    await user.type(input, '123{enter}');
     expect(button).toBeEnabled();
   });
 
@@ -57,9 +59,10 @@ describe('RomanNumeralConverter', () => {
       json: async () => mockResult,
     });
     const { input, button, onResult } = setup();
-    fireEvent.change(input, { target: { value: '123' } });
-    fireEvent.blur(input);
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.type(input, '123');
+    await user.tab(); // blur
+    await user.click(button);
     await waitFor(() => {
       expect(onResult).toHaveBeenCalledWith('CXXIII');
     });
@@ -72,9 +75,10 @@ describe('RomanNumeralConverter', () => {
       json: async () => ({ error: 'Bad request' }),
     });
     const { input, button, onError } = setup();
-    fireEvent.change(input, { target: { value: '12' } }); // Valid so the button's enabled.  Response will be a bad request anyway
-    fireEvent.blur(input);
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.type(input, '12'); // Valid so the button's enabled.  Response will be a bad request anyway
+    await user.tab(); // blur
+    await user.click(button);
     await waitFor(() => {
       expect(onError).toHaveBeenCalledWith('Bad request');
     });
@@ -84,9 +88,10 @@ describe('RomanNumeralConverter', () => {
     const fetchMock = global.fetch as jest.Mock;
     fetchMock.mockRejectedValue(new Error('Network error'));
     const { input, button, onError } = setup();
-    fireEvent.change(input, { target: { value: '123' } });
-    fireEvent.blur(input);
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.type(input, '123');
+    await user.tab(); // blur
+    await user.click(button);
     await waitFor(() => {
       expect(onError).toHaveBeenCalledWith('Network error');
     });
@@ -100,19 +105,21 @@ describe('RomanNumeralConverter', () => {
       .mockResolvedValueOnce({ ok: true, json: async () => mockResult1 })
       .mockResolvedValueOnce({ ok: true, json: async () => mockResult2 });
     const { input, button, onResult } = setup();
+    const user = userEvent.setup();
     // First conversion
-    fireEvent.change(input, { target: { value: '123' } });
-    fireEvent.blur(input);
-    fireEvent.click(button);
+    await user.type(input, '123');
+    await user.tab(); // blur
+    await user.click(button);
     await waitFor(() => {
       expect(onResult).toHaveBeenCalledWith('CXXIII');
     });
     // Clear result (simulate parent clearing result)
     onResult('');
     // Second conversion
-    fireEvent.change(input, { target: { value: '144' } });
-    fireEvent.blur(input);
-    fireEvent.click(button);
+    await user.clear(input);
+    await user.type(input, '144');
+    await user.tab(); // blur
+    await user.click(button);
     await waitFor(() => {
       expect(onResult).toHaveBeenCalledWith('CXLIV');
     });
@@ -120,5 +127,25 @@ describe('RomanNumeralConverter', () => {
     expect(onResult.mock.calls[0][0]).toBe('CXXIII');
     expect(onResult.mock.calls[1][0]).toBe('');
     expect(onResult.mock.calls[2][0]).toBe('CXLIV');
+  });
+
+  it('calls backend and onResult when pressing Enter in the input', async () => {
+    const mockResult = { output: 'CXXIII' };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => mockResult,
+    });
+    const { input, onResult } = setup();
+    const user = userEvent.setup();
+    await user.type(input, '123');
+    await user.type(input, '{enter}');
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining('query=123'),
+        expect.objectContaining({ headers: expect.objectContaining({ 'X-Request-Id': expect.any(String) }) })
+      );
+      expect(onResult).toHaveBeenCalledWith('CXXIII');
+    });
   });
 }); 

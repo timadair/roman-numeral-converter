@@ -42,6 +42,12 @@ export function RomanNumeralConverter({ onResult, onError }: RomanNumeralConvert
     setInputValue(val);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !loading && inputValue && inputValue >= 1 && inputValue <= 3999) {
+      handleConvert();
+    }
+  };
+
   return (
     <Flex gap="size-200" alignItems="end">
       <NumberField
@@ -52,6 +58,7 @@ export function RomanNumeralConverter({ onResult, onError }: RomanNumeralConvert
         maxValue={3999}
         width="size-3000"
         formatOptions={{ maximumFractionDigits: 0 }}
+        onKeyUp={handleKeyDown}
       />
       <Button
         variant="primary"
