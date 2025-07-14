@@ -62,8 +62,6 @@ export function HomePage() {
           )}
         </Flex>
       </View>
-      {/* Dialogs currently break the page, likely from  Polyfill issue with Vite.  Not fixed by workaround in https://github.com/adobe/react-spectrum/discussions/8189 */}
-      {/* Setting aside because everything is solid enough that I can't get the call to the backend to fail unless I fabricate an error.  I'm sure I just lack imagination. */}
       <DialogContainer onDismiss={() => setShowError(false)}>
         {showError && 
           <AlertDialog

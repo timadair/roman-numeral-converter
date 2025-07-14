@@ -29,5 +29,3 @@ Implements the modern standard Roman numeral specification, 1-3999, found at htt
 - lint-staged limits Husky to only staged files, which I wish I had known about earlier
 
 ## Known Issues
-
-- AlertDialog crashes because process in undefined, likely from polyfill issues with Vite.  Not fixed by the workaround in https://github.com/adobe/react-spectrum/discussions/8189, possibly because this is a monorepo.
