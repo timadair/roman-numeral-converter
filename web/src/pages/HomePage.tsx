@@ -1,4 +1,4 @@
-import { View, Button, Flex, Text, AlertDialog } from '@adobe/react-spectrum';
+import { View, Button, Flex, DialogContainer, AlertDialog } from '@adobe/react-spectrum';
 import { useState } from 'react';
 import { RomanInscription } from '../components/RomanInscription';
 import { NumberInput } from '../components/NumberInput';
@@ -27,8 +27,6 @@ export function HomePage() {
         }
         const data = await response.json();
         setResult(data.output);
-        setError(null);
-        setShowError(false);
       } catch (err: any) {
         console.log("Error for traceId", traceId, err);
         setError(err.message || 'Network error');
@@ -66,7 +64,18 @@ export function HomePage() {
       </View>
       {/* Dialogs currently break the page, likely from  Polyfill issue with Vite.  Not fixed by workaround in https://github.com/adobe/react-spectrum/discussions/8189 */}
       {/* Setting aside because everything is solid enough that I can't get the call to the backend to fail unless I fabricate an error.  I'm sure I just lack imagination. */}
-      { showError && <Text>{("Error: " + error) || "An unknown error occurred."}</Text>}            
+      <DialogContainer onDismiss={() => setShowError(false)}>
+        {showError && 
+          <AlertDialog
+            title="Error"
+            variant="error"
+            primaryActionLabel="OK"
+            onPrimaryAction={() => setShowError(false)}
+          >
+            {error || "An unknown error occurred."}
+          </AlertDialog>
+        }
+      </DialogContainer>
     </>
   );
 } 
