@@ -1,0 +1,10 @@
+node_modules
+web/node_modules
+api/node_modules
+dist
+web/dist
+api/dist
+.git
+.gitignore
+Dockerfile
+*.log
