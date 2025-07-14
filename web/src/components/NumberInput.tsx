@@ -40,7 +40,6 @@ export function NumberInput({ onResult, onError }: NumberInputProps) {
 
   const handleInputChange = (val: number | undefined) => {
     setInputValue(val);
-    onResult(''); // Clear result on input change
   };
 
   return (
