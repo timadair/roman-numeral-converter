@@ -15,7 +15,9 @@ export function ColorSchemeToggle() {
       aria-label={`Switch to ${colorScheme === 'light' ? 'dark' : 'light'} mode`}
       marginEnd="size-200"
     >
-      {colorScheme === 'light' ? <Moon /> : <Light />}
+      {colorScheme === 'light'
+        ? <Moon data-testid="spectrum-icon-Moon" />
+        : <Light data-testid="spectrum-icon-Light" />}
     </Button>
   );
 } 
