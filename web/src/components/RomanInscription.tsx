@@ -7,6 +7,10 @@ interface RomanInscriptionProps {
   size?: string;
 }
 
+/*
+  I wasn't able to find a way to make the Roman text as impressive as I wanted using Adobe conventions, so I'm trying the UNSAFE approach.
+  More appropriate might be generating an image with the roman numerals, as long as it could be done quickly.
+*/
 export function RomanInscription({
   children,
   size = '1.5rem',
