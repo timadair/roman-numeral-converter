@@ -75,5 +75,4 @@ Uses React with TypeScript + SWC, built by Vite.
 
 ## Known Issues
 
--Convert button isn't enabled until onBlur after entering a valid input.  The input field prevents bad inputs pretty thoroughly, so I'll probably remove the logic that disables the button.
 -Doesn't support non-Arabic numeral inputs, at least when I tried out simplified Chinese characters.  It's an extreme edge case, but I thought I'd note it.

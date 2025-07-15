@@ -148,4 +148,13 @@ describe('RomanNumeralConverter', () => {
       expect(onResult).toHaveBeenCalledWith('CXXIII');
     });
   });
+
+  it('shows message when clicking button before entering input', async () => {
+    const { button, onResult } = setup();
+    const user = userEvent.setup();
+    await user.click(button);
+    await waitFor(() => {
+      expect(onResult).toHaveBeenCalledWith('Please enter a number between 1 and 3999');
+    });
+  });
 }); 

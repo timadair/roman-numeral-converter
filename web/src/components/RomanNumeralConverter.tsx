@@ -63,7 +63,7 @@ export function RomanNumeralConverter({ onResult, onError }: RomanNumeralConvert
       <Button
         variant="primary"
         onPress={handleConvert}
-        isDisabled={!inputValue || inputValue < 1 || inputValue > 3999 || loading}
+        isDisabled={loading}
         isPending={loading}
       >
         Convert
